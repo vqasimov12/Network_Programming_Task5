@@ -1,24 +1,92 @@
-﻿using System.Text;
+﻿using MailKit;
+using MailKit.Net.Imap;
+using MailKit.Search;
+using MimeKit;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Network_Programming_Task5
+namespace Network_Programming_Task5;
+
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    private ObservableCollection<MimeMessage> mails=[];
+
+
+    public ObservableCollection<MimeMessage> Mails { get => mails; set { mails = value; OnPropertyChanged(); } }
+
+    private async Task GetMailsAsync(string _folderName="Inbox")
     {
-        public MainWindow()
+        try
         {
-            InitializeComponent();
+            using var imap = new ImapClient();
+            await imap.ConnectAsync("imap.gmail.com", 993, true);
+            await imap.AuthenticateAsync("qasimov.vaqif512@gmail.com", "aphh stkt mdoe yzxa");
+
+            var inbox = imap.GetFolder(_folderName);
+            await inbox.OpenAsync(FolderAccess.ReadOnly);
+
+            var ids = await inbox.SearchAsync(SearchQuery.All);
+            var tempMails = new ObservableCollection<MimeMessage>();
+
+            foreach (var id in ids)
+            {
+                var message = await inbox.GetMessageAsync(id);
+                tempMails.Add(message);
+            }
+
+            Mails = tempMails; 
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error retrieving emails: {ex.Message}");
+        }
+    }
+
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        var a = new MimeMessage();
+        DataContext = this;
+        _ = GetMailsAsync();
+    }
+
+    private void InboxBtn_Click(object sender, RoutedEventArgs e)
+    {
+        _=GetMailsAsync();
+    }
+
+    private void StarredBtn_Click(object sender, RoutedEventArgs e)
+    {
+        _ = GetMailsAsync("Starred");
+    }
+
+    private void SnooozdBtn_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SentBtn_Click(object sender, RoutedEventArgs e)
+    {
+        _ = GetMailsAsync("Sent");
+    }
+
+    private void DraftBtn_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
