@@ -12,32 +12,34 @@ namespace Network_Programming_Task5;
 
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
-    private ObservableCollection<MimeMessage> mails=[];
+    private ObservableCollection<MimeMessage> mails = new();
 
 
     public ObservableCollection<MimeMessage> Mails { get => mails; set { mails = value; OnPropertyChanged(); } }
 
-    private async Task GetMailsAsync(string _folderName="Inbox")
+    private async Task GetMailsAsync(string _folderName = "Inbox")
     {
+        var obj=new object();
         try
         {
             using var imap = new ImapClient();
             await imap.ConnectAsync("imap.gmail.com", 993, true);
             await imap.AuthenticateAsync("qasimov.vaqif512@gmail.com", "aphh stkt mdoe yzxa");
 
-            var inbox = imap.GetFolder(_folderName);
-            await inbox.OpenAsync(FolderAccess.ReadOnly);
+            var folder = imap.GetFolder(_folderName);
+            await folder.OpenAsync(FolderAccess.ReadOnly);
 
-            var ids = await inbox.SearchAsync(SearchQuery.All);
+            var ids = await folder.SearchAsync(SearchQuery.All);
             var tempMails = new ObservableCollection<MimeMessage>();
-
+            Mails = [];
             foreach (var id in ids)
             {
-                var message = await inbox.GetMessageAsync(id);
-                tempMails.Add(message);
+                var message = await folder.GetMessageAsync(id);
+                Application.Current.Dispatcher.Invoke(new(() =>
+                {
+                    Mails.Add(message);
+                }));
             }
-
-            Mails = tempMails; 
         }
         catch (Exception ex)
         {
@@ -56,12 +58,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void InboxBtn_Click(object sender, RoutedEventArgs e)
     {
-        _=GetMailsAsync();
+        _ = GetMailsAsync();
     }
 
     private void StarredBtn_Click(object sender, RoutedEventArgs e)
     {
-        _ = GetMailsAsync("Starred");
+        _ = GetMailsAsync("[Gmail]/Starred");
     }
 
     private void SnooozdBtn_Click(object sender, RoutedEventArgs e)
@@ -71,7 +73,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void SentBtn_Click(object sender, RoutedEventArgs e)
     {
-        _ = GetMailsAsync("Sent");
+        _ = GetMailsAsync("[Gmail]/Sent Mail");
     }
 
     private void DraftBtn_Click(object sender, RoutedEventArgs e)

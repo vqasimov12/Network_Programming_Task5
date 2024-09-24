@@ -59,7 +59,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding From}" Width="200"/>
-                    <GridViewColumn Width="440" DisplayMemberBinding="{Binding Subject}" />
+                    <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Subject}" />
                 </GridView>
             </ListView.View>
         </ListView>
