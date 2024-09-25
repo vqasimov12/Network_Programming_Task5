@@ -16,37 +16,37 @@
             <Border CornerRadius="15" BorderThickness="2" Margin="20">
                 <Button Background="LightBlue" Content="Compose" Foreground="White" FontFamily="Times New Roman" FontSize="20" Height="50" BorderThickness="0" Click="Button_Click_1"/>
             </Border>
-            <Button BorderThickness="0" x:Name="InboxBtn" Background="Transparent" Click="InboxBtn_Click">
+            <Button BorderThickness="0" x:Name="InboxBtn" Background="Transparent" CommandParameter="{Binding ElementName=list}" Command="{Binding InboxCommand}">
 
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
                     <materialDesign:PackIcon Margin="-17 0" Kind="Inbox" />
-                    <TextBlock HorizontalAlignment="Left" Text="Inbox"  />
+                    <TextBlock HorizontalAlignment="Left" Text="Inbox"/>
                 </StackPanel>
             </Button>
-            <Button BorderThickness="0" Margin="0 5" x:Name="StarredBtn" Background="Transparent" Click="StarredBtn_Click">
+            <Button BorderThickness="0" Margin="0 5" x:Name="StarredBtn" Background="Transparent" CommandParameter="{Binding ElementName=list}" Command="{Binding StarredCommand}">
 
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
                     <materialDesign:PackIcon Margin="-10 0 0 0" Kind="StarBorder" />
                     <TextBlock HorizontalAlignment="Left" Text="Starred"  />
                 </StackPanel>
             </Button>
-            
-            <Button BorderThickness="0" Margin="0 5" x:Name="SnooozdBtn" Background="Transparent" Click="SnooozdBtn_Click" >
+
+            <Button BorderThickness="0" Margin="0 5" x:Name="SnooozdBtn" Background="Transparent" CommandParameter="{Binding ElementName=list}" Command="{Binding SnoozedCommand}" >
 
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
                     <materialDesign:PackIcon  Kind="ClockOutline" />
                     <TextBlock HorizontalAlignment="Left" Text="Snoozed" />
                 </StackPanel>
             </Button>
-            
-            <Button BorderThickness="0" Margin="0 5" x:Name="SentBtn" Background="Transparent" Click="SentBtn_Click"  >
+
+            <Button BorderThickness="0" Margin="0 5" x:Name="SentBtn" Background="Transparent" CommandParameter="{Binding ElementName=list}" Command="{Binding SentCommand}"  >
 
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
                     <materialDesign:PackIcon  Kind="Send" />
                     <TextBlock HorizontalAlignment="Left" Text="Sent" Margin="10 0" />
                 </StackPanel>
             </Button>
-            <Button BorderThickness="0" Margin="0 5" x:Name="DraftBtn" Background="Transparent" Click="DraftBtn_Click" Height="19"  >
+            <Button BorderThickness="0" Margin="0 5" x:Name="DraftBtn" Background="Transparent" CommandParameter="{Binding ElementName=list}" Command="{Binding DraftCommand}" Height="19"  >
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
                     <materialDesign:PackIcon  Kind="Draft" />
                     <TextBlock HorizontalAlignment="Left" Text="Drafts" Margin="10 0" />
@@ -55,7 +55,7 @@
 
         </StackPanel>
 
-        <ListView Grid.Column="1" ItemsSource="{Binding Mails}" MouseDoubleClick="ListView_MouseDoubleClick">
+        <ListView Grid.Column="1" MouseDoubleClick="ListView_MouseDoubleClick" Name="list">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding From}" Width="200"/>
@@ -63,6 +63,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
 
     </Grid>
 </Window>
