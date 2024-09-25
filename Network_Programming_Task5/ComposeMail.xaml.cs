@@ -20,7 +20,7 @@ public partial class ComposeMail : Window, INotifyPropertyChanged
     public string BccTxt { get => bccTxt; set { bccTxt = value; OnPropertyChanged(); } }
     public string CcTxt { get => ccTxt; set { ccTxt = value; OnPropertyChanged(); } }
     public string Destination { get => destination; set { destination = value; OnPropertyChanged(); } }
-    public string Content { get => content; set { content = value; OnPropertyChanged(); } }
+    public string MailContent { get => content; set { content = value; OnPropertyChanged(); } }
     public ComposeMail()
     {
         InitializeComponent();
@@ -60,7 +60,7 @@ public partial class ComposeMail : Window, INotifyPropertyChanged
             if (CcVisiblity)
                 mail.CC.Add(CcTxt);
             mail.Subject = "";
-            mail.Body = Content?.ToString() ?? "No content provided.";
+            mail.Body = MailContent?.ToString() ?? "No content provided.";
 
             smtp.Port = 587;
             smtp.Credentials = new NetworkCredential("qasimov.vaqif512@gmail.com", "epma ppdx blox xgmv");

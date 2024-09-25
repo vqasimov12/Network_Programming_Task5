@@ -55,7 +55,7 @@
 
         </StackPanel>
 
-        <ListView Grid.Column="1" ItemsSource="{Binding Mails}">
+        <ListView Grid.Column="1" ItemsSource="{Binding Mails}" MouseDoubleClick="ListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding From}" Width="200"/>

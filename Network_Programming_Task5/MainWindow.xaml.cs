@@ -97,4 +97,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var window = new ComposeMail();
         window.ShowDialog();
     }
+
+    private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+
+    }
 }
