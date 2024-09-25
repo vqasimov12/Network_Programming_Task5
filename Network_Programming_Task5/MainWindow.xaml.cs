@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Network_Programming_Task5;
 
@@ -17,7 +18,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public ObservableCollection<MimeMessage> Mails { get => mails; set { mails = value; OnPropertyChanged(); } }
 
-    private async Task GetMailsAsync(string _folderName = "Inbox")
+    private async Task GetMailsAsync(SpecialFolder a=SpecialFolder.All)
     {
         var obj=new object();
         try
@@ -26,7 +27,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             await imap.ConnectAsync("imap.gmail.com", 993, true);
             await imap.AuthenticateAsync("qasimov.vaqif512@gmail.com", "aphh stkt mdoe yzxa");
 
-            var folder = imap.GetFolder(_folderName);
+            var folder = imap.GetFolder(a);
             await folder.OpenAsync(FolderAccess.ReadOnly);
 
             var ids = await folder.SearchAsync(SearchQuery.All);
@@ -43,7 +44,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error retrieving emails: {ex.Message}");
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -53,7 +54,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         InitializeComponent();
         var a = new MimeMessage();
         DataContext = this;
-        _ = GetMailsAsync();
+        //_ = GetMailsAsync();
     }
 
     private void InboxBtn_Click(object sender, RoutedEventArgs e)
@@ -63,7 +64,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void StarredBtn_Click(object sender, RoutedEventArgs e)
     {
-        _ = GetMailsAsync("[Gmail]/Starred");
+        _ = GetMailsAsync(SpecialFolder.Important);
     }
 
     private void SnooozdBtn_Click(object sender, RoutedEventArgs e)
@@ -71,9 +72,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     }
 
-    private void SentBtn_Click(object sender, RoutedEventArgs e)
+    private async void SentBtn_Click(object sender, RoutedEventArgs e)
     {
-        _ = GetMailsAsync("[Gmail]/Sent Mail");
+        await GetMailsAsync(SpecialFolder.Sent);
     }
 
     private void DraftBtn_Click(object sender, RoutedEventArgs e)
@@ -100,6 +101,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
+        var list = sender as ListView;
+        if (list is null) return;
+        var window = new MailWindow();
 
+        window.Mail = list.SelectedItem as MimeMessage;
+        window.ShowDialog();
     }
 }

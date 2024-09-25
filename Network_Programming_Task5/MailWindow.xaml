@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Network_Programming_Task5"
         mc:Ignorable="d"
-        Title="MailWindow" Height="450" Width="800">
+        Title="MailWindow" Height="450" Width="400" WindowState="Maximized">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding Mail.To}"/>
+        <TextBlock Grid.Row="1" Text="{Binding MailBody}" FontSize="17" Foreground="#060405"/>
     </Grid>
 </Window>

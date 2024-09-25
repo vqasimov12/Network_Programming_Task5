@@ -1,27 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MimeKit;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Network_Programming_Task5
+namespace Network_Programming_Task5;
+
+public partial class MailWindow : Window, INotifyPropertyChanged
 {
-    /// <summary>
-    /// Interaction logic for MailWindow.xaml
-    /// </summary>
-    public partial class MailWindow : Window
+    private MimeMessage mail;
+    private string mailBody;
+
+    public MimeMessage Mail { get => mail; set { mail = value; OnPropertyChanged(); OnPropertyChanged(nameof(MailBody)); } }
+    public MailWindow()
     {
-        public MailWindow()
+        InitializeComponent();
+        DataContext = this;
+    }
+    public string MailBody => DecodeBody(Mail);
+
+    private string DecodeBody(MimeMessage mimeMessage)
+    {
+        if (mimeMessage.Body is Multipart multipart)
         {
-            InitializeComponent();
+            var textPart = multipart.OfType<TextPart>().FirstOrDefault();
+            if (textPart != null)
+                return textPart.Text;
         }
+        return string.Empty;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
