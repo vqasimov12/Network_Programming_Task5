@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Margin="0,-10,0,10">
             <Border CornerRadius="15" BorderThickness="2" Margin="20">
-                <Button Background="LightBlue" Content="Compose" Foreground="White" FontFamily="Times New Roman" FontSize="20" Height="50" BorderThickness="0"/>
+                <Button Background="LightBlue" Content="Compose" Foreground="White" FontFamily="Times New Roman" FontSize="20" Height="50" BorderThickness="0" Click="Button_Click_1"/>
             </Border>
             <Button BorderThickness="0" x:Name="InboxBtn" Background="Transparent" Click="InboxBtn_Click">
 

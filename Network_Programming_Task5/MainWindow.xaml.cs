@@ -82,7 +82,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-
+       
     }
 
 
@@ -90,5 +90,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+        var window = new ComposeMail();
+        window.ShowDialog();
     }
 }

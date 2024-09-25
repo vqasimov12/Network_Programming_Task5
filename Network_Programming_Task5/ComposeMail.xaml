@@ -4,9 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Network_Programming_Task5"
+xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ComposeMail" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="ComposeMail" Height="530" Width="400">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <StackPanel>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Content="Cc" Background="Transparent" x:Name="CcBtn" BorderThickness="0" Margin="10" Click="CcBtn_Click"/>
+            <Button Content="Bcc" Margin="10" Background="Transparent" x:Name="BccBtn" BorderThickness="0" Click="BccBtn_Click"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="20 8" >
+            <TextBlock Text="To" Width="50" Height="30" VerticalAlignment="Top" Margin="5 0" FontSize="23" />
+            <TextBox x:Name="DestinationTxt" Width="300" Height="30"  FontSize="20" VerticalAlignment="Top" Text="{Binding Destination}" Background="Transparent" Foreground="#060405" />
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="20 8" Visibility="{Binding CcVisiblity, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Cc" Width="50" Height="30" VerticalAlignment="Top" Margin="5 0" FontSize="23" />
+
+            <TextBox Text="{Binding CcTxt}" Width="300" Height="30"  FontSize="20" VerticalAlignment="Top" Background="Transparent" Foreground="#060405" />
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="20 8" Visibility="{Binding BccVisiblity, Converter={StaticResource BooleanToVisibilityConverter}}" >
+            <TextBlock Text="Bcc" Height="30" VerticalAlignment="Top" Margin="5 0" FontSize="23" Width="50" />
+
+            <TextBox Text="{Binding BccTxt}" Width="300" Height="30"  FontSize="20" VerticalAlignment="Top" Background="Transparent" Foreground="#060405" />
+
+        </StackPanel>
+        <TextBox FontSize="17" Height="250" Text="{Binding Content}"/>
+        <Button x:Name="SendBtn" Height="30" Width="100" Content="Send" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10" Background="#060405" Foreground="White" FontSize="18" Click="SendBtn_Click"/>
+    </StackPanel>
 </Window>
