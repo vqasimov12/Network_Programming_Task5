@@ -12,7 +12,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{Binding Mail.To}"/>
+        <TextBlock Grid.Row="0" Text="{Binding Mail.From}" FontSize="20" Foreground="#060405" FontWeight="DemiBold" FontStyle="Italic" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="1" Text="{Binding MailBody}" FontSize="17" Foreground="#060405"/>
     </Grid>
 </Window>
